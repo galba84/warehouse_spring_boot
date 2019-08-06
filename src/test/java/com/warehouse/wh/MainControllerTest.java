@@ -1,6 +1,5 @@
 package com.warehouse.wh;
 
-import com.warehouse.wh.dao.StockItemDAO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,8 +23,6 @@ public class MainControllerTest {
 
     @Autowired
     private MainController mainController;
-    @Autowired
-    private StockItemDAO stockItemDAO;
 
     @Test
     public void getHello() throws Exception {

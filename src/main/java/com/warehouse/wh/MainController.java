@@ -3,40 +3,23 @@ package com.warehouse.wh;
 import com.warehouse.wh.Entity.Article;
 import com.warehouse.wh.Entity.Location;
 import com.warehouse.wh.Entity.StockItem;
-import com.warehouse.wh.dao.ArticleDAO;
-import com.warehouse.wh.dao.LocationDAO;
-import com.warehouse.wh.dao.StockItemDAO;
+import com.warehouse.wh.Service.WarehouseDataServiceImpl;
 import org.hibernate.exception.DataException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Random;
 
 
 @RestController
 public class MainController {
 
-
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
-
     @Autowired
-    private ModelMapper modelMapper;
-
-    @Autowired
-    private StockItemDAO stockItemDAO;
-    @Autowired
-    private ArticleDAO articleDAO;
-
-    @Autowired
-    private LocationDAO locationDAO;
+    private WarehouseDataServiceImpl warehouseDataService;
 
     @ResponseBody
     @RequestMapping("/")
@@ -48,34 +31,30 @@ public class MainController {
     @ResponseBody
     @GetMapping("/stockItems")
     String stockItems() {
-        Iterable<StockItem> result = stockItemDAO.findAll();
-        String resultString = "";
+        List<StockItem> result = warehouseDataService.getStockItems();
+        StringBuffer sb = new StringBuffer();
         for (StockItem item : result
         ) {
-            resultString += "ITEM : " + item.toString() + System.lineSeparator();
+            sb.append("ITEM : " + item.toString() + System.lineSeparator());
         }
-        return resultString;
+        return sb.toString();
     }
 
     @PostMapping("/stockItem")
     public ResponseEntity<StockItem> newStockItem() {
         Random random = new Random(1000);
         random.nextInt(500);
-
         StockItem stockItem = new StockItem();
-        Iterable<Article> articles = articleDAO.findAll();
+        Iterable<Article> articles = warehouseDataService.getArticles();
         stockItem.setLocation(new Location(random.nextInt(500) + 50, random.nextInt(50) + 10));
-
         stockItem.setArticle(articles.iterator().next());
-
-        return new ResponseEntity<StockItem>(stockItemDAO.save(stockItem), HttpStatus.OK);
+        return new ResponseEntity<StockItem>(warehouseDataService.save(stockItem), HttpStatus.OK);
     }
 
     @ResponseBody
     @GetMapping("/stockItems/{id}")
     String one(@PathVariable Long id) {
-
-        StockItem stockItem = stockItemDAO.findById(id)
+        StockItem stockItem = warehouseDataService.getStockItemById(id)
                 .orElseThrow(() -> new DataException("stockItem not found id: " + id, new SQLException()));
         return stockItem.toString();
     }

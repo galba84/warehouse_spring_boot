@@ -6,9 +6,9 @@ import java.text.SimpleDateFormat;
 import com.warehouse.wh.Entity.Article;
 import com.warehouse.wh.Entity.Location;
 import com.warehouse.wh.Entity.StockItem;
-import com.warehouse.wh.dao.ArticleDAO;
-import com.warehouse.wh.dao.LocationDAO;
-import com.warehouse.wh.dao.StockItemDAO;
+import com.warehouse.wh.dao.ArticleDao;
+import com.warehouse.wh.dao.LocationDao;
+import com.warehouse.wh.dao.StockItemDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -17,14 +17,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataInit implements ApplicationRunner {
 
-    private StockItemDAO stockItemDAO;
-    private ArticleDAO articleDAO;
-    private LocationDAO locationDAO;
+    private StockItemDao stockItemDAO;
+    private ArticleDao articleDAO;
+    private LocationDao locationDAO;
 
     private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Autowired
-    public DataInit(StockItemDAO stockItemDAO, ArticleDAO articleDAO, LocationDAO locationDAO) {
+    public DataInit(StockItemDao stockItemDAO, ArticleDao articleDAO, LocationDao locationDAO) {
         this.stockItemDAO = stockItemDAO;
         this.articleDAO = articleDAO;
         this.locationDAO = locationDAO;

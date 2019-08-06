@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LocationDAO extends CrudRepository<Location, Long> {
+public interface LocationDao extends CrudRepository<Location, Long> {
 
 
 }
